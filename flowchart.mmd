@@ -6,13 +6,12 @@ flowchart TD
     C -- Yes --> E([Dashboard / Main Menu])
     
     E --> F([Encrypt User Data])
-    F --> G([Save Encrypted File]) --> E
+    F --> G([Save Encrypted File])
+    G --> H([Use Steganography])
+    H --> I([Hide Data in File])
+    I --> J([Extract / Decrypt Data])
+    J --> K([Show Original Data])
 
-    E --> H([Use Steganography])
-    H --> I([Hide Data in File]) --> E
-
-    E --> J([Extract / Decrypt Data])
-    J --> K([Show Original Data]) --> E
 
 
 

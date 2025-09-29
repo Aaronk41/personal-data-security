@@ -1,15 +1,18 @@
 flowchart TD
     A([Start App]) --> B([Login Screen])
-    B --> C{Login OK?}
+    B --> C{User Authenticated?}
     C -- No --> D([Show Error / Retry])
     D --> B
     C -- Yes --> E([Dashboard / Main Menu])
-    E --> F([Encrypt File])
-    E --> G([Hide Data in Image])
-    E --> H([Extract Data])
-    E --> I([Exit App])
-    F --> J([Save Encrypted File]) --> E
-    G --> K([Save Steganography Image]) --> E
-    H --> L([Show Original Data]) --> E
+    
+    E --> F([Encrypt User Data])
+    F --> G([Save Encrypted File]) --> E
+
+    E --> H([Use Steganography])
+    H --> I([Hide Data in File]) --> E
+
+    E --> J([Extract / Decrypt Data])
+    J --> K([Show Original Data]) --> E
+
 
 

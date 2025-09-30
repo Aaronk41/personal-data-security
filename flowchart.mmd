@@ -1,16 +1,43 @@
 flowchart TD
-    A([Start App]) --> B([Login Screen])
-    B --> C{User Authenticated?}
-    C -- No --> D([Show Error / Retry])
-    D --> B
-    C -- Yes --> E([Dashboard / Main Menu])
-    
-    E --> F([Encrypt User Data])
-    F --> G([Save Encrypted File])
-    G --> H([Use Steganography])
-    H --> I([Hide Data in File])
-    I --> J([Extract / Decrypt Data])
-    J --> K([Show Original Data])
+
+    %% Login process
+    A[Start: Open StegCrypt] --> B{Fingerprint Login Successful?}
+    B -- Yes --> C[Access Granted → Show GUI]
+    B -- No --> D{Username & Password Correct?}
+    D -- Yes --> C
+    D -- No --> E[Access Denied → Retry Login]
+
+    %% Encryption process
+    C --> F[User selects Encryption Tool]
+    F --> G[Select file to encrypt]
+    G --> H{File size between 50MB and 100MB?}
+    H -- No --> I[Error: File must be 50–100MB] --> C
+    H -- Yes --> J[Encrypt File]
+    J --> K[Encryption Complete] --> C
+
+    %% Decryption process (system check only)
+    C --> L[User selects Decryption Tool]
+    L --> M[Select file]
+    M --> N{System detects: File is encrypted?}
+    N -- No --> O[Error: Not an encrypted file] --> C
+    N -- Yes --> P[Decrypt File]
+    P --> Q[Decryption Complete] --> C
+
+    %% Steganography process - Hide
+    C --> R[User selects Steganography Tool → Hide]
+    R --> S[Select cover image]
+    S --> T[Select file to hide]
+    T --> U[Hide File in Image]
+    U --> V[Steganography Complete] --> C
+
+    %% Steganography process - Reveal (system check only)
+    C --> W[User selects Steganography Tool → Reveal]
+    W --> X[Select image file]
+    X --> Y{System detects: Hidden data found?}
+    Y -- No --> Z[Error: No hidden data in image] --> C
+    Y -- Yes --> AA[Reveal Hidden File]
+    AA --> AB[Reveal Complete] --> C
+
 
 
 

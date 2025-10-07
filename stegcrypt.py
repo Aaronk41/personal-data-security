@@ -3,7 +3,7 @@ from tkinter import ttk
 import os
 from PIL import Image, ImageTk
 
-# styles
+# Styles
 window = tk.Tk()
 window.geometry('900x600')
 window.configure(background="#1e1e1e")
@@ -190,4 +190,5 @@ selected_reveal_label = tk.Label(
 selected_reveal_label.place(x=540, y=560)
 
 window.mainloop()
+
 

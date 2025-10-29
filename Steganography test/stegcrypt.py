@@ -219,7 +219,7 @@ def select_hidden_material():
 
 # Hide hidden material in the PNG file
 # Hide using stego lsb steganography
-def hide():
+def hide(steg_input_filepath, hidden_material):
     # Define output_file as global for reveal section
     global output_file
     # Prompt user to save steg file
@@ -339,5 +339,6 @@ toggle_button = ttk.Button(
 toggle_button.place(x=750, y=20)
 
 apply_theme("dark")
+
 
 window.mainloop()

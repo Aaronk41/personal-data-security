@@ -128,7 +128,7 @@ else:
     )
     logo.place(x=430, y=120)
 # file size
-MIN_FILE_SIZE = 50 * 1024 * 1024
+
 MAX_FILE_SIZE = 100 * 1024 * 1024
 
 # Encryption Section
@@ -139,7 +139,7 @@ encrypt_label.place(x=160, y=220)
 encrypt_instr = tk.Label(
     window,
     text=(
-        "• Select a file (max size: 50–100 MB)\n"
+        "• Select a file (max size: 100 MB)\n"
         "• Click Encrypt to fully encrypt it\n"
         "• Click Decrypt to reverse encryption"
     ),
@@ -170,11 +170,11 @@ def select_encrypt_file_func():
     file_path = filedialog.askopenfilename(title="Select File to Encrypt")
     if file_path:
         size = os.path.getsize(file_path)
-        if MIN_FILE_SIZE <= size <= MAX_FILE_SIZE:
+        if size <= MAX_FILE_SIZE:
             encrypt_file_path = file_path
             selected_encrypt_label.config(text=f"Currently selected encryption file: {file_path}")
         else:
-            messagebox.showerror("File Size Error", "File must be between 50 MB and 100 MB.")
+            messagebox.showerror("File Size Error", "File must be 100 MB or less.")
             encrypt_file_path = None
             selected_encrypt_label.config(text="Currently selected encryption file: None")
 
@@ -201,15 +201,16 @@ def select_decrypt_file_func():
     file_path = filedialog.askopenfilename(title="Select File to Decrypt")
     if file_path:
         size = os.path.getsize(file_path)
-        if MIN_FILE_SIZE <= size <= MAX_FILE_SIZE:
+        if size <= MAX_FILE_SIZE:
             decrypt_file_path = file_path
             selected_decrypt_label.config(text=f"Currently selected file to decrypt: {file_path}")
         else:
-            messagebox.showerror("File Size Error", "File must be between 50 MB and 100 MB.")
+            messagebox.showerror("File Size Error", "File must be 100 MB or less.")
             decrypt_file_path = None
             selected_decrypt_label.config(text="Currently selected file to decrypt: None")
 
 select_decrypt_file.config(command=select_decrypt_file_func)
+
 
 # Steganography Section
 # Define Global Varibles

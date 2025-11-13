@@ -330,22 +330,27 @@ def select_hidden_material():
 # Hide hidden material in the PNG file
 # Hide using stego lsb steganography
 def hide(steg_input_filepath, hidden_material):
-    # Define output_file as global for reveal section
     global output_file
-    # Prompt user to save steg file
+
+    # Open the image using PIL
+    image = Image.open(steg_input_filepath)
+
+    if image.mode != "RGB":
+        image = image.convert("RGB")
+
     output_file = filedialog.asksaveasfilename(
         title="Save File As",
-        filetypes=(
-            ("png files", "*.png"),
-        )
+        filetypes=(("png files", "*.png"),)
     )
-    hidden_image = lsb.hide(steg_input_filepath, hidden_material.read())
+    
+    hidden_image = lsb.hide(image, hidden_material.read())
     hidden_image.save(output_file)
-    # Check if output file was created and output message
+
     if output_file:
         messagebox.showinfo("Success", f"Hidden file saved as {output_file}")
     else:
         messagebox.showwarning("File Not Saved", "No file was saved")
+
 #select stego png file to reveal
 def select_reveal_png():
     # Define steg_reveal_filepath as global for reveal button

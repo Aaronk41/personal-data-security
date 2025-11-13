@@ -291,6 +291,8 @@ select_decrypt_file.config(command=select_decrypt_file_func)
 steg_input_filepath = None
 hidden_material = None
 output_file = None
+steg_reveal_filepath = None
+
 # Steganography Functions
 # Select input png file to hide message in
 def select_input_png():
@@ -308,6 +310,8 @@ def select_input_png():
         messagebox.showinfo("Selected File", f"File selected: {steg_input_filepath}")
     else:
         messagebox.showwarning("No File Selected", "No file was selected.")
+    # update label
+selected_image_label.config(text=f"Currently selected image: {steg_input_filepath}")
 # Select material to hide
 def select_hidden_material():
     # Define hidden_material variable global for hide section
@@ -326,6 +330,8 @@ def select_hidden_material():
         messagebox.showwarning("No Selection", "No file was selected.")
     # Read contents of hidden material file path
     hidden_material = open(hidden_material_filepath, "r")
+    # update the label
+    selected_hidden_label.config(text=f"File selected to hide: {hidden_material_filepath}")
 
 # Hide hidden material in the PNG file
 # Hide using stego lsb steganography
@@ -340,7 +346,8 @@ def hide(steg_input_filepath, hidden_material):
 
     output_file = filedialog.asksaveasfilename(
         title="Save File As",
-        filetypes=(("png files", "*.png"),)
+        defaultextension=".png",
+        filetypes=[("png files", "*.png")]
     )
     
     hidden_image = lsb.hide(image, hidden_material.read())
@@ -367,15 +374,16 @@ def select_reveal_png():
         messagebox.showinfo("Selected File", f"You selected: {steg_reveal_filepath}")
     else:
         messagebox.showwarning("No File Selected", "No file was selected.")
+    #update label
+    selected_reveal_label.config(text=f"File selected to reveal: {steg_reveal_filepath}")
 
 # Reveal txt file using stego lsb steganography
 def reveal():
     #reveal
     extracted_file = filedialog.asksaveasfilename(
         title="Save File As",
-        filetypes=(
-            ("text file", "*.txt"),
-        )
+        defaultextension=".txt",
+        filetypes=[("text file", "*.txt")]
     )
     clear_message=lsb.reveal(steg_reveal_filepath)
     with open(extracted_file, "w") as f:
@@ -457,4 +465,5 @@ apply_theme("dark")
 
 
 window.mainloop()
+
 

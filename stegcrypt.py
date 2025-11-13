@@ -3,6 +3,80 @@ from tkinter import ttk, filedialog, messagebox
 import os
 from PIL import Image, ImageTk
 from stegano import lsb
+from cryptography.fernet import Fernet
+
+# --- Encryption & Decryption Logic ---
+
+def generate_key():
+    """Generates a new Fernet key and saves it to secret.key"""
+    key = Fernet.generate_key()
+    with open("secret.key", "wb") as key_file:
+        key_file.write(key)
+    return key
+
+def load_key():
+    """Loads the Fernet key, or generates one if missing."""
+    try:
+        return open("secret.key", "rb").read()
+    except FileNotFoundError:
+        return generate_key()
+
+def encrypt_selected_file():
+    """Encrypts the file selected for encryption."""
+    global encrypt_file_path
+    if not encrypt_file_path:
+        messagebox.showwarning("No File Selected", "Please select a file to encrypt.")
+        return
+
+    try:
+        key = load_key()
+        f = Fernet(key)
+
+        with open(encrypt_file_path, "rb") as file:
+            data = file.read()
+
+        encrypted_data = f.encrypt(data)
+        output_file = encrypt_file_path.rsplit(".", 1)[0] + "[encrypted].txt"
+
+        with open(output_file, "wb") as file:
+            file.write(encrypted_data)
+
+        os.remove(encrypt_file_path)
+        messagebox.showinfo("Success", f"Encrypted and saved as:\n{output_file}")
+
+        selected_encrypt_label.config(text=f"File encrypted: {output_file}")
+    except Exception as e:
+        messagebox.showerror("Encryption Error", f"An error occurred:\n{e}")
+
+def decrypt_selected_file():
+    """Decrypts the file selected for decryption."""
+    global decrypt_file_path
+    if not decrypt_file_path:
+        messagebox.showwarning("No File Selected", "Please select a file to decrypt.")
+        return
+
+    try:
+        key = load_key()
+        f = Fernet(key)
+
+        with open(decrypt_file_path, "rb") as file:
+            encrypted_data = file.read()
+
+        decrypted_data = f.decrypt(encrypted_data)
+        output_file = decrypt_file_path.rsplit(".", 1)[0] + "[decrypted].txt"
+
+        with open(output_file, "wb") as file:
+            file.write(decrypted_data)
+
+        os.remove(decrypt_file_path)
+        messagebox.showinfo("Success", f"Decrypted and saved as:\n{output_file}")
+
+        selected_decrypt_label.config(text=f"File decrypted: {output_file}")
+    except Exception as e:
+        messagebox.showerror("Decryption Error", f"An error occurred:\n{e}")
+
+
+
 
 # Window Specs
 window = tk.Tk()
@@ -29,7 +103,7 @@ COLOR_THEMES = {
         "secondary_bg": "#f0f0f0",
         "text_fg": "black",
         "highlight_fg": "#9370db",
-        "button_bg": "#c0c0c0",  
+        "button_bg": "#c0c0c0",
         "button_fg": "black",
         "button_active_bg": "#9370db",
         "button_active_fg": "white",
@@ -43,28 +117,28 @@ def apply_theme(theme_name):
     """Applies the selected color theme to all widgets."""
     theme = COLOR_THEMES[theme_name]
     current_theme.set(theme_name)
-    
+
     window.configure(background=theme["primary_bg"])
-    
+
     title.configure(bg=theme["primary_bg"], fg=theme["highlight_fg"])
-    
+
     if 'logo' in globals():
         logo.configure(bg=theme["primary_bg"])
         if logo.cget("text") == "(logo)":
             logo.configure(fg=theme["logo_text_fg"])
-    
+
     encrypt_label.configure(bg=theme["primary_bg"], fg=theme["text_fg"])
     stego_label.configure(bg=theme["primary_bg"], fg=theme["text_fg"])
-    
+
     encrypt_instr.configure(bg=theme["secondary_bg"], fg=theme["text_fg"])
     stego_instr.configure(bg=theme["secondary_bg"], fg=theme["text_fg"])
-    
+
     selected_encrypt_label.configure(bg=theme["primary_bg"], fg=theme["text_fg"])
     selected_decrypt_label.configure(bg=theme["primary_bg"], fg=theme["text_fg"])
     selected_image_label.configure(bg=theme["primary_bg"], fg=theme["text_fg"])
     selected_hidden_label.configure(bg=theme["primary_bg"], fg=theme["text_fg"])
     selected_reveal_label.configure(bg=theme["primary_bg"], fg=theme["text_fg"])
-    
+
     style.configure(
         "TButton",
         background=theme["button_bg"],
@@ -75,10 +149,10 @@ def apply_theme(theme_name):
         background=[('active', theme["button_active_bg"])],
         foreground=[('active', theme["button_active_fg"])]
     )
-    
+
 
     toggle_button.configure(text=f"Switch to {next_theme(theme_name)} Mode")
-    
+
 def next_theme(current):
     """Returns the name of the next theme."""
     return "Dark" if current == "light" else "Light"
@@ -105,22 +179,22 @@ title = tk.Label(
 )
 title.place(x=380, y=20)
 
-# Logo 
+# Logo
 img_path = os.path.join(os.path.dirname(__file__), "dino.png")
 if os.path.exists(img_path):
     img = Image.open(img_path)
     img_display = img.resize((120, 120))
     logo_img = ImageTk.PhotoImage(img_display)
-    
+
 
     img_icon = img.resize((32, 32))
     logo_icon_img = ImageTk.PhotoImage(img_icon)
-    window.iconphoto(False, logo_icon_img) 
-    
+    window.iconphoto(False, logo_icon_img)
+
     logo = tk.Label(window, image=logo_img)
     logo.place(x=390, y=70)
 else:
-    logo_img = None 
+    logo_img = None
     logo = tk.Label(
         window,
         text="(logo)",
@@ -154,7 +228,7 @@ encrypt_instr.place(x=160, y=250)
 select_encrypt_file = ttk.Button(window, text="Select File")
 select_encrypt_file.place(x=180, y=420)
 
-encrypt_btn = ttk.Button(window, text="Encrypt")
+encrypt_btn = ttk.Button(window, text="Encrypt", command=encrypt_selected_file)
 encrypt_btn.place(x=280, y=420)
 
 selected_encrypt_label = tk.Label(
@@ -185,7 +259,7 @@ decrypt_file_path = None
 select_decrypt_file = ttk.Button(window, text="Select File")
 select_decrypt_file.place(x=180, y=490)
 
-decrypt_btn = ttk.Button(window, text="Decrypt")
+decrypt_btn = ttk.Button(window, text="Decrypt", command=decrypt_selected_file)
 decrypt_btn.place(x=280, y=490)
 
 selected_decrypt_label = tk.Label(
@@ -230,7 +304,7 @@ def select_input_png():
         )
     )
     # Check if a file was selected and output message
-    if steg_input_filepath: 
+    if steg_input_filepath:
         messagebox.showinfo("Selected File", f"File selected: {steg_input_filepath}")
     else:
         messagebox.showwarning("No File Selected", "No file was selected.")
@@ -368,8 +442,8 @@ selected_reveal_label = tk.Label(
 selected_reveal_label.place(x=540, y=560)
 
 toggle_button = ttk.Button(
-    window, 
-    text=f"Switch to {next_theme(current_theme.get())} Mode", 
+    window,
+    text=f"Switch to {next_theme(current_theme.get())} Mode",
     command=toggle_theme
 )
 toggle_button.place(x=750, y=20)

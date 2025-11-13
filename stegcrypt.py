@@ -331,7 +331,7 @@ def select_hidden_material():
     # Read contents of hidden material file path
     hidden_material = open(hidden_material_filepath, "r")
     # update the label
-    selected_hidden_label.config(text=f"File selected to hide: {hidden_material_filepath}")
+    selected_hidden_label.config(text=f"Currently selected to hide: {hidden_material_filepath}")
 
 # Hide hidden material in the PNG file
 # Hide using stego lsb steganography
@@ -375,7 +375,7 @@ def select_reveal_png():
     else:
         messagebox.showwarning("No File Selected", "No file was selected.")
     #update label
-    selected_reveal_label.config(text=f"File selected to reveal: {steg_reveal_filepath}")
+    selected_reveal_label.config(text=f"Currently selected to reveal: {steg_reveal_filepath}")
 
 # Reveal txt file using stego lsb steganography
 def reveal():
@@ -465,6 +465,7 @@ apply_theme("dark")
 
 
 window.mainloop()
+
 
 
 

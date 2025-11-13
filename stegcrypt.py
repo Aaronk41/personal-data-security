@@ -311,7 +311,7 @@ def select_input_png():
     else:
         messagebox.showwarning("No File Selected", "No file was selected.")
     # update label
-selected_image_label.config(text=f"Currently selected image: {steg_input_filepath}")
+    selected_image_label.config(text=f"Currently selected image: {steg_input_filepath}")
 # Select material to hide
 def select_hidden_material():
     # Define hidden_material variable global for hide section
@@ -465,5 +465,6 @@ apply_theme("dark")
 
 
 window.mainloop()
+
 
 

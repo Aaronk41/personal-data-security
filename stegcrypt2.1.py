@@ -91,7 +91,7 @@ toggle_btn = ttk.Button(
 )
 toggle_btn.place(x=720, y=30)
 
-img_path = os.path.join(os.path.dirname(__file__), "dino.png")
+img_path = os.path.join(os.path.dirname(__file__), "dino2.png")
 if os.path.exists(img_path):
     img = Image.open(img_path).resize((200, 120))
     logo_img = ImageTk.PhotoImage(img)
@@ -295,4 +295,5 @@ selected_hidden_label = tk.Label(window, text="No file selected", bg=current_the
 selected_hidden_label.place(x=500, y=400)
 
 # App Launch
+
 window.mainloop()

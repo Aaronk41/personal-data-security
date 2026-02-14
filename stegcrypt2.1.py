@@ -112,7 +112,7 @@ encrypt_label.place(x=200, y=220)
 
 encrypt_instr = tk.Label(
     window,
-   
+   text="Select a file and encrypt or decrypt",
     bg=current_theme["bg"],
     fg=current_theme["fg"]
 )
@@ -215,7 +215,7 @@ stego_label.place(x=590, y=220)
 
 stego_instr = tk.Label(
     window,
-   
+   text="Hide or reveal text in PNG images",
     bg=current_theme["bg"],
     fg=current_theme["fg"]
 )
@@ -297,3 +297,4 @@ selected_hidden_label.place(x=500, y=400)
 # App Launch
 
 window.mainloop()
+

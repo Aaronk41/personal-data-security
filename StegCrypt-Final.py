@@ -227,7 +227,7 @@ stego_label.place(x=590, y=180)
 
 stego_instr = tk.Label(
     window,
-   text="Click the hide button and select a .txt or .csv file that you wish to hide\nThen select the .png file you wish to carry the hidden material\nFinally choose the file name of the hidden .png file\n\nClick the reveal button and select your hidden material .png\nName the revealed file and save",
+   text="Select the .png file you wish to carry the hidden material\nFinally choose the file name of the hidden .png file\nNo transparent .png files\nClick the hide button and select a .txt or .csv file that you wish to hide\n\n\nClick the reveal button and select your hidden material .png\nName the revealed file and save",
     bg=current_theme["bg"],
     fg=current_theme["fg"]
 )

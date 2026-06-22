@@ -1,1 +1,3 @@
-# personal-data-security
+# StegCrypt
+
+StegCrypt is a Python-based cybersecurity application designed to protect sensitive information through a combination of encryption and steganography. The tool allows users to encrypt confidential data and conceal it within image files, providing an additional layer of security beyond traditional encryption methods. Built with a user-friendly Tkinter graphical interface, StegCrypt streamlines secure data hiding, extraction, and decryption workflows while maintaining accessibility for non-technical users. The project showcases practical experience in cryptography, secure software development, steganographic techniques, desktop application design, and cybersecurity-focused problem solving.
